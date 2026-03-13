@@ -1,0 +1,21 @@
+{
+  "name": "express-blog-sql",
+  "version": "1.0.0",
+  "description": "Esercizio Prendiamo le API precedentemente create per il vostro blog ed aggiungiamo la persistenza tramite la connessione a un DB",
+  "repository": {
+    "type": "git",
+    "url": "express-blog-sql"
+  },
+  "license": "ISC",
+  "author": "Valeria Cristiano",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "watch": "node --watch app.js",
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
