@@ -22,6 +22,16 @@ function show(req, res) {
 
   const sql = `Select * FROM posts WHERE id = ?`;
 
+  const tagsSql = `
+SELECT tags.*
+FROM db_blog.posts
+JOIN db_blog.post_tag
+ON posts.id = post_tag.post_id
+JOIN db_blog.tags
+ON tags.id = post_tag.tag_id
+WHERE posts.id = ?;
+  `;
+
   connection.query(sql, [id], (err, results) => {
     if (err) {
       return res.status(500).json({
@@ -37,11 +47,23 @@ function show(req, res) {
       };
       return res.status(404).json(responseData);
     }
-    const responseData = {
-      result: results[0],
-      success: true,
-    };
-    res.json(responseData);
+
+    const post = results[0];
+
+    connection.query(tagsSql, [id], (err, tagsResults) => {
+      if (err) {
+        return res.status(500).json({
+          message: "Internal server error",
+          success: false,
+        });
+      }
+      post.tags = tagsResults;
+      const responseData = {
+        result: post,
+        success: true,
+      };
+      res.json(responseData);
+    });
   });
 }
 
