@@ -17,4 +17,37 @@ function index(req, res) {
   });
 }
 
-module.exports = { index };
+//Delete
+function destroy(req, res) {
+  console.log(`Delete element with id:${req.params.id} `);
+
+  const { id } = req.params;
+
+  const sql = `DELETE FROM posts WHERE id = ?`;
+
+  connection.query(sql, [id], (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Internal server error",
+        success: false,
+      });
+    }
+
+    if (results.affectedRows == 0) {
+      const responseData = {
+        result: `Blog post with id: ${id} not found`,
+        success: false,
+      };
+      return res.status(404).json(responseData);
+    }
+  });
+
+  const responseData = {
+    message: `element with id: ${id} deleted`,
+    success: true,
+  };
+
+  res.json(responseData);
+}
+
+module.exports = { index, destroy };
